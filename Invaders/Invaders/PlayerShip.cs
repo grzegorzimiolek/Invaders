@@ -19,7 +19,7 @@ namespace Invaders
         public PlayerShip(Form mainForm)
         {
             animationTimer.Tick += new EventHandler(animationTimer_Tick);
-            animationTimer.Interval = 50;
+            animationTimer.Interval = 10;
             animationTimer.Start();
             BackColor = System.Drawing.Color.Transparent;
             BackgroundImageLayout = ImageLayout.None;
