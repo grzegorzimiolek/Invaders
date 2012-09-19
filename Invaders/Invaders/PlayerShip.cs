@@ -10,8 +10,29 @@ namespace Invaders
     class PlayerShip : PictureBox
     {
         private Timer animationTimer = new Timer();
-        private int Width = 54;
-        private int Height = 33;
+        private int width = 54;
+        private int height = 33;
+
+        public int Width
+        {
+            get
+            {
+                return this.width;
+            }
+
+            set {}
+        }
+
+        public int Height
+        {
+            get
+            {
+                return this.height;
+            }
+
+            set {}
+        }
+
         private Form mainForm;
         private int step = 5;
         

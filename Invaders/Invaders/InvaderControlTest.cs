@@ -70,11 +70,6 @@ namespace Invaders
                 {
                     Location = new Point(Location.X + this.step, 0);
                 }
-                
-                if (Location.X == this.mainForm.Width)
-                {
-                    
-                }
             }
 
             if (Location.X >= 0 && this.direction == Direction.Left)
