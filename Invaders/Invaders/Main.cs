@@ -12,6 +12,7 @@ namespace Invaders
     public partial class Main : Form
     {
         private Game game;
+        private List<Keys> keysPressed = new List<Keys>();
 
         public Main()
         {
@@ -29,25 +30,42 @@ namespace Invaders
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             game.Go();
+
+            foreach (Keys key in keysPressed)
+            {
+                if (key == Keys.Left)
+                {
+                    game.MoveSpaceShip(Direction.Left);
+                    //return;
+                }
+                else if (key == Keys.Right)
+                {
+                    game.MoveSpaceShip(Direction.Right);
+                    //return;
+                }
+            }
+
             this.Invalidate();
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (e.KeyCode == Keys.Q)
             {
-                case Keys.Space:
-                    game.FireShot();
-                    break;
-                case Keys.Right:
-                    game.MoveSpaceShip(Direction.Right);
-                    break;
-                case Keys.Left:
-                    game.MoveSpaceShip(Direction.Left);
-                    break;
-
-                default: break;
+                Application.Exit();
             }
+
+            if (e.KeyCode == Keys.Space)
+            {
+                game.FireShot();
+            }
+
+            if (keysPressed.Contains(e.KeyCode))
+            {
+                keysPressed.Remove(e.KeyCode);
+            }
+
+            keysPressed.Add(e.KeyCode);
         }
 
         private void onPaint(object sender, PaintEventArgs e)
@@ -56,6 +74,15 @@ namespace Invaders
             using (g = this.CreateGraphics())
             {
                 game.Go();
+                game.Draw(g);
+            }
+        }
+
+        private void onKeyUp(object sender, KeyEventArgs e)
+        {
+            if (keysPressed.Contains(e.KeyCode))
+            {
+                keysPressed.Remove(e.KeyCode);
             }
         }
     }

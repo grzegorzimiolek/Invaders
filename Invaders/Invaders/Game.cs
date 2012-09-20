@@ -34,7 +34,7 @@ namespace Invaders
         private List<Shot> playerShots;
         private List<Shot> invaderShots;
 
-        private Stars stars;
+        private Star star;
 
         public Game(Main MainForm)
         {
@@ -42,6 +42,14 @@ namespace Invaders
             this.bug = new InvaderControlTest(this.MainForm) { Location = new Point(0, 0) };
             this.playerShip = new PlayerShip(this.MainForm) { Location = new Point(0, this.MainForm.Height - 54) };
             boundaries = new Rectangle(0, 0, this.MainForm.Width, this.MainForm.Height);
+            
+            random = new Random();
+
+            star = new Star(new Point(random.Next(0, boundaries.Width), random.Next(0, boundaries.Height)), new Pen(Color.DarkMagenta), boundaries);
+            using (Graphics g = this.MainForm.CreateGraphics())
+            {
+                star.Draw(g);
+            }
         }
 
         public void DrawBug()
@@ -92,12 +100,13 @@ namespace Invaders
                 shot.Move();
                 FireShot();
             }
+            star.Twinkle(random);
         }
 
 
         public void Draw(Graphics g)
         {
-
+            star.Draw(g);
         }
     }
 }

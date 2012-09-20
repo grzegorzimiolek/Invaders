@@ -47,6 +47,7 @@
             this.Text = "Invaders";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.onKeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.onKeyUp);
             this.ResumeLayout(false);
 
         }
