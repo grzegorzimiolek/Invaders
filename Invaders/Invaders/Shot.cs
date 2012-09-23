@@ -35,13 +35,13 @@ namespace Invaders
         public void Draw(Graphics g)
         {
             Brush brush = new SolidBrush(Color.Yellow);
-            g.FillRectangle(brush, new Rectangle(this.Location.X, this.y, width, height));
+            g.FillRectangle(brush, new Rectangle(this.Location.X - 25, this.y - 80, width, height));
         }
 
         public bool Move()
         {
             IntervalCount++;
-            if (moveInterval == IntervalCount)
+            if ((moveInterval/4) == IntervalCount)
             {
                 IntervalCount = 0;
                 this.y -= moveInterval;

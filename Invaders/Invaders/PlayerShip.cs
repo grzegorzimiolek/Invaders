@@ -9,59 +9,49 @@ namespace Invaders
 {
     class PlayerShip : PictureBox
     {
-        private Timer animationTimer = new Timer();
-        private int width = 54;
-        private int height = 33;
+        private int step = 20;
 
-        public int Width
+        private Bitmap bitmap;
+        public Point Location;
+
+        public PlayerShip()
         {
-            get
-            {
-                return this.width;
-            }
-
-            set {}
+            bitmap = Game.ResizeImage(Properties.Resources.player, 54, 33);
         }
 
-        public int Height
+        public void Draw(Graphics g)
         {
-            get
-            {
-                return this.height;
-            }
-
-            set {}
-        }
-
-        private Form mainForm;
-        private int step = 5;
-        
-
-        public PlayerShip(Form mainForm)
-        {
-            animationTimer.Tick += new EventHandler(animationTimer_Tick);
-            animationTimer.Interval = 10;
-            animationTimer.Start();
-            BackColor = System.Drawing.Color.Transparent;
-            BackgroundImageLayout = ImageLayout.None;
+            g.DrawImage(bitmap, Location.X, Location.Y / 2);
             
-            this.mainForm = mainForm;
+            /* Double buffered
+            using (g = Graphics.FromImage(bitmap))
+            {
+                DrawOneFrame(g);
+            }
+             */
         }
 
-        private void animationTimer_Tick(object sender, EventArgs e)
+        private void DrawOneFrame(Graphics g)
         {
-            BackgroundImage = Properties.Resources.player;
+
+            //g.DrawImage(bitmap, Location.X, Location.Y - 80); //Double buffered
         }
 
         public void Move(Direction direction)
         {
             if (direction == Direction.Right)
             {
-                Location = new Point(Location.X + step, this.mainForm.Height - 54);
+                if (Location.X + step + 60 <= 600)
+                {
+                    Location = new Point(Location.X + step, 800);
+                }
             }
             else
             {
-                Location = new Point(Location.X - step, this.mainForm.Height - 54);
+                if (Location.X - step >= 0)
+                {
+                    Location = new Point(Location.X - step, 800);
+                }
             }
         }
     }

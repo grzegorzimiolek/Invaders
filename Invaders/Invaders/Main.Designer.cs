@@ -33,6 +33,10 @@
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
+            // animationTimer
+            // 
+            this.animationTimer.Tick += new System.EventHandler(this.animationTimer_Tick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

@@ -18,7 +18,6 @@ namespace Invaders
     class Game
     {
         private Main MainForm;
-        private InvaderControlTest bug;
         
         private Shot shot;
 
@@ -39,27 +38,29 @@ namespace Invaders
         public Game(Main MainForm)
         {
             this.MainForm = MainForm;
-            this.bug = new InvaderControlTest(this.MainForm) { Location = new Point(0, 0) };
-            this.playerShip = new PlayerShip(this.MainForm) { Location = new Point(0, this.MainForm.Height - 54) };
+
+            invaders = new List<Invader>();
+            
+            for (int i = 0; i < 6; i++)
+            {
+                int j = 0;
+                foreach (Type type in Enum.GetValues(typeof(Type)))
+                {   
+                    invaders.Add( new Invader(type, new Point(60 * i, j * 60), i * 10));
+                    j++;
+                }
+            }
+
+            this.playerShip = new PlayerShip() { Location = new Point(280, 800) };
             boundaries = new Rectangle(0, 0, this.MainForm.Width, this.MainForm.Height);
             
             random = new Random();
-
+            
             star = new Star(new Point(random.Next(0, boundaries.Width), random.Next(0, boundaries.Height)), new Pen(Color.DarkMagenta), boundaries);
             using (Graphics g = this.MainForm.CreateGraphics())
             {
                 star.Draw(g);
             }
-        }
-
-        public void DrawBug()
-        {
-            MainForm.Controls.Add(this.bug);
-        }
-
-        public void DrawSpaceShip()
-        {
-            MainForm.Controls.Add(this.playerShip);
         }
 
         public void MoveSpaceShip(Direction direction)
@@ -91,8 +92,6 @@ namespace Invaders
             }
         }
 
-        
-
         public void Go()
         {
             if (temp)
@@ -101,12 +100,22 @@ namespace Invaders
                 FireShot();
             }
             star.Twinkle(random);
+
+            foreach (Invader invader in invaders)
+            {
+                invader.Move(Direction.Right);
+            }
         }
 
-
-        public void Draw(Graphics g)
+        public void Draw(Graphics g, int animationCell)
         {
             star.Draw(g);
+            playerShip.Draw(g);
+            
+            foreach (Invader invader in invaders)
+            {
+                invader.Draw(g, animationCell);
+            }
         }
     }
 }

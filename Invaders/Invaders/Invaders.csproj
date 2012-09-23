@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
-    <Compile Include="Invader.cs" />
+    <Compile Include="Invader.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="InvaderControlTest.cs">
       <SubType>Component</SubType>
     </Compile>

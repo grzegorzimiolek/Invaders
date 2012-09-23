@@ -14,7 +14,7 @@ namespace Invaders
         private List<Star> stars;
         private Rectangle boundaries;
 
-        private int count = 300;
+        private int count = 100;
 
         private Random random;
 
@@ -26,8 +26,9 @@ namespace Invaders
 
             random = new Random();
             stars = new List<Star>();
-            
         }
+
+
 
         public void Draw(Graphics g)
         {
@@ -52,7 +53,6 @@ namespace Invaders
                 {
                     stars.RemoveAt(index);
                 }
-                
             }
 
             for (int i = 0; i < 5; i++)

@@ -9,7 +9,7 @@ namespace Invaders
 {
     class InvaderControlTest : PictureBox
     {
-        private Timer animationTimer = new Timer();
+        //private Timer animationTimer = new Timer();
         private int Width = 45;
         private int Height = 51;
         private Direction direction = Direction.Right;
@@ -18,11 +18,11 @@ namespace Invaders
 
         public InvaderControlTest(Form form)
         {
-            animationTimer.Tick += new EventHandler(animationTimer_Tick);
-            animationTimer.Interval = 50;
-            animationTimer.Start();
+            //animationTimer.Tick += new EventHandler(animationTimer_Tick);
+            //animationTimer.Interval = 50;
+            //animationTimer.Start();
             BackColor = System.Drawing.Color.Transparent;
-            BackgroundImageLayout = ImageLayout.None;
+            //BackgroundImageLayout = ImageLayout.None;
 
             this.mainForm = form;
 
@@ -81,7 +81,6 @@ namespace Invaders
                     this.direction = Direction.Right;
                 }
             }
-   
         }
     }
 }
