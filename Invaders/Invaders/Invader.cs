@@ -18,7 +18,7 @@ namespace Invaders
 
     class Invader : PictureBox
     {
-        private const int HorizontalInterval = 10;
+        private const int HorizontalInterval = 100;
         private const int VerticalInterval = 40;
 
         private Bitmap image;
@@ -43,8 +43,6 @@ namespace Invaders
             this.InvaderType = invaderType;
             this.Location = location;
             this.Score = score;
-
-            BackColor = System.Drawing.Color.Transparent;
         }
 
         public void Move(Direction direction)
@@ -53,17 +51,18 @@ namespace Invaders
             if ((VerticalInterval * 3) == IntervalCount)
             {
                 IntervalCount = 0;
-                
-                if (direction == Direction.Right)
+
+                switch (direction)
                 {
-                    Location = new Point(Location.X + VerticalInterval, Location.Y);
-                }
-                else
-                {
-                    if (Location.X - VerticalInterval >= 0)
-                    {
+                    case Direction.Right:
+                        Location = new Point(Location.X + VerticalInterval, Location.Y);
+                        break;
+                    case Direction.Left:
                         Location = new Point(Location.X - VerticalInterval, Location.Y);
-                    }
+                        break;
+                    case Direction.Down:
+                        Location = new Point(Location.X, Location.Y + HorizontalInterval);
+                        break;
                 }
             }
         }

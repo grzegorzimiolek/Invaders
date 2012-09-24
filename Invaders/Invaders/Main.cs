@@ -28,7 +28,6 @@ namespace Invaders
             animationTimer.Enabled = true;
 
             game = new Game(this);
-            //game.DrawSpaceShip();
         }
 
         private void gameTimer_Tick(object sender, EventArgs e)
