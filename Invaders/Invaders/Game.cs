@@ -18,10 +18,6 @@ namespace Invaders
     class Game
     {
         private Main MainForm;
-        
-        private Shot shot;
-
-        private Boolean temp = false;
 
         private Rectangle windowBoundaries;
         private Rectangle playableBoundaries;
@@ -36,10 +32,14 @@ namespace Invaders
 
         private Star star;
 
+        private Font font = new Font("Arial", 18, FontStyle.Bold);
+
         private int topPadding = 70;
         private int leftRightPadding = 20;
 
         private int invaderTop = 0;
+
+        private int playerScore = 0;
 
         public Game(Main MainForm)
         {
@@ -51,15 +51,37 @@ namespace Invaders
             for (int i = 0; i < 6; i++)
             {
                 int j = 0;
+                int score = 0;
                 foreach (Type type in Enum.GetValues(typeof(Type)))
                 {
-                    invaders.Add(new Invader(type, new Point(60 * i + leftRightPadding, j * 60 + topPadding), i * 10));
+                    switch (type)
+                    {
+                        case Type.Star:
+                            score = 10;
+                            break;
+                        case Type.Spaceship:
+                            score = 20;
+                            break;
+                        case Type.Saucer:
+                            score = 30;
+                            break;
+                        case Type.Bug:
+                            score = 40;
+                            break;
+                        case Type.Satellite:
+                            score = 50;
+                            break;
+                    }
+
+                    invaders.Add(new Invader(type, new Point(60 * i + leftRightPadding, j * 60 + topPadding), score));
                     j++;
                 }
             }
             invaderDirection = Direction.Right;
+            invaderShots = new List<Shot>();
 
             playerShip = new PlayerShip(windowBoundaries, playableBoundaries) { Location = new Point(playableBoundaries.Width / 2, playableBoundaries.Height) };
+            playerShots = new List<Shot>();
 
             star = new Star(new Point(random.Next(0, windowBoundaries.Width), random.Next(0, windowBoundaries.Height)), new Pen(Color.DarkMagenta), windowBoundaries);
             using (Graphics g = this.MainForm.CreateGraphics())
@@ -70,7 +92,7 @@ namespace Invaders
 
         public void MoveSpaceShip(Direction direction)
         {
-            this.playerShip.Move(direction);
+            playerShip.Move(direction);
         }
 
         public static Bitmap ResizeImage(Bitmap Picture, int width, int height)
@@ -85,37 +107,94 @@ namespace Invaders
 
         public void FireShot()
         {
-            if (temp == false)
+            if (playerShots.Count < 3)
             {
-                shot = new Shot(new Point(this.playerShip.Location.X + this.playerShip.Width / 2, this.playerShip.Location.Y + this.playerShip.Height), Direction.Top, windowBoundaries);
-                temp = true;
-            }
-
-            using (Graphics g = this.MainForm.CreateGraphics())
-            {
-                shot.Draw(g);
+                playerShots.Add(new Shot(new Point(playerShip.Location.X + playerShip.Width / 2, playerShip.Location.Y + playerShip.Height), Direction.Top, windowBoundaries));
             }
         }
 
         public void Go()
         {
+            
             star.Twinkle(random);
-
-            getDirectionForInvaders();
-            foreach (Invader invader in invaders)
-            {   
-                invader.Move(invaderDirection);
-            }
+            moveInvaders();
+            checkForInvadersCollisions();
         }
 
         public void Draw(Graphics g, int animationCell)
         {
+            showScore(g);
             star.Draw(g);
             playerShip.Draw(g);
-            
+
+            for (int i = 0; i < playerShots.Count(); i++)
+            {
+                if (playerShots[i].Move())
+                {
+                    playerShots[i].Draw(g);
+                }
+                else
+                {
+                    playerShots.RemoveAt(i);
+                }
+            }
+
             foreach (Invader invader in invaders)
             {
                 invader.Draw(g, animationCell);
+            }
+        }
+
+        private void showScore(Graphics g)
+        {
+            g.DrawString("Score: " + playerScore.ToString(), font, Brushes.White, new Point(10, 10));
+        }
+
+        private void returnFire()
+        {
+
+        }
+
+        private void checkForSpaceShipCollisions()
+        {
+
+        }
+
+        private void checkForInvadersCollisions()
+        {
+            for (int i = 0; i < playerShots.Count(); i++)
+            {
+                var hitInvaders = from invader in invaders
+                                  where invader.Area.Contains(playerShots[i].Location)
+                                  select invader;
+
+                List<Invader> listToRemove = new List<Invader>();
+
+                foreach (Invader invader in hitInvaders)
+                {
+                    listToRemove.Add(invader);
+                    
+                }
+
+                if (listToRemove.Count() > 0)
+                {
+                    foreach (Invader invader in listToRemove)
+                    {
+                        playerScore += invader.Score;
+                        invaders.Remove(invader);
+                        playerShots.RemoveAt(i);
+                    }
+                }
+            }
+            
+        }
+
+        private void moveInvaders()
+        {
+            getDirectionForInvaders();
+            foreach (Invader invader in invaders)
+            {
+                invader.Move(invaderDirection);
             }
         }
 
@@ -134,8 +213,6 @@ namespace Invaders
             {
                 this.invaderTop = invaderTop.First();
             }
-
-            Console.WriteLine(this.invaderTop);
 
             foreach (int x in invadersEdge)
             {
@@ -172,8 +249,7 @@ namespace Invaders
                                 this.invaderTop = 0;
                             }
                         }
-                        break;
-                         
+                        break; 
                 }
             }
         }

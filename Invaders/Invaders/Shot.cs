@@ -13,13 +13,10 @@ namespace Invaders
         private const int width = 5;
         private const int height = 15;
 
-        public Point Location { get; private set; }
+        public Point Location;
 
         private Direction direction;
         private Rectangle boundaries;
-
-        private int x;
-        private int y;
 
         private int IntervalCount = 0;
         
@@ -28,26 +25,30 @@ namespace Invaders
             this.Location = location;
             this.direction = direction;
             this.boundaries = boundaries;
-            this.x = boundaries.Width;
-            this.y = boundaries.Height;
+
+            Location.Y = boundaries.Height;
         }
 
         public void Draw(Graphics g)
         {
             Brush brush = new SolidBrush(Color.Yellow);
-            g.FillRectangle(brush, new Rectangle(this.Location.X - 25, this.y - 80, width, height));
+            g.FillRectangle(brush, new Rectangle(Location.X - 25, Location.Y - 80, width, height));
         }
 
         public bool Move()
         {
+            if (Location.Y < 120)
+            {
+                return false;
+            }
+
             IntervalCount++;
             if ((moveInterval/4) == IntervalCount)
             {
-                IntervalCount = 0;
-                this.y -= moveInterval;
-                return true;
+                    IntervalCount = 0;
+                    Location.Y -= moveInterval;       
             }
-            return false;
+            return true;
         }
     }
 }

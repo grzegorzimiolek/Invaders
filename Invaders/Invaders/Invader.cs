@@ -21,7 +21,7 @@ namespace Invaders
         private const int HorizontalInterval = 100;
         private const int VerticalInterval = 40;
 
-        private Bitmap image;
+        private Bitmap bitmap = null;
 
         public Point Location { get; private set; }
         public Type InvaderType { get; private set; }
@@ -30,7 +30,7 @@ namespace Invaders
         {
             get
             {
-                return new Rectangle(Location, image.Size);
+                return new Rectangle(Location, bitmap.Size);
             }
         }
 
@@ -74,7 +74,6 @@ namespace Invaders
 
         private Bitmap InvaderImage(int animationCell)
         {
-            Bitmap bitmap = null;
             switch (InvaderType)
             {
                 case Type.Bug:
