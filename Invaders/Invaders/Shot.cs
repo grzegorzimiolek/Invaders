@@ -26,27 +26,40 @@ namespace Invaders
             this.direction = direction;
             this.boundaries = boundaries;
 
-            Location.Y = boundaries.Height;
+            //Location.Y = boundaries.Height;
         }
 
         public void Draw(Graphics g)
         {
             Brush brush = new SolidBrush(Color.Yellow);
-            g.FillRectangle(brush, new Rectangle(Location.X - 25, Location.Y - 80, width, height));
+            g.FillRectangle(brush, new Rectangle(Location.X - 25, Location.Y, width, height));
         }
 
         public bool Move()
         {
-            if (Location.Y < 120)
+            if (Location.Y < 120 && direction == Direction.Top)
             {
                 return false;
             }
 
+            if (Location.Y > boundaries.Height && direction == Direction.Down)
+            {
+                return false;
+            }
+            
+
             IntervalCount++;
             if ((moveInterval/4) == IntervalCount)
             {
-                    IntervalCount = 0;
-                    Location.Y -= moveInterval;       
+                IntervalCount = 0;
+                if (direction == Direction.Top)
+                {
+                    Location.Y -= moveInterval;
+                }
+                else
+                {
+                    Location.Y += moveInterval;
+                }       
             }
             return true;
         }

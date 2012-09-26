@@ -17,6 +17,14 @@ namespace Invaders
         private Bitmap bitmap;
         public Point Location;
 
+        public Rectangle Area
+        {
+            get
+            {
+                return new Rectangle(Location, bitmap.Size);
+            }
+        }
+
         private Rectangle windowBoundaries;
         private Rectangle playableBoundaries;
 
